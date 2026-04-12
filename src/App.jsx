@@ -302,13 +302,17 @@ function FreelancePage() {
 }
 
 // ─── 節税シミュレーションページ ──────────────────
-function SimPage({ onCalc }) {
-  const [sales,setSales]       = useState("");
-  const [expenses,setExpenses] = useState("");
-  const [aoshiro,setAoshiro]   = useState("65万（e-Tax）");
-  const [age,setAge]           = useState("40歳未満");
-  const [deps,setDeps]         = useState(0);
-  // カスタマイズ可能な会員費
+function SimPage({ onCalc, inputs, setInputs }) {
+  const sales    = inputs.sales;
+  const expenses = inputs.expenses;
+  const aoshiro  = inputs.aoshiro;
+  const age      = inputs.age;
+  const deps     = inputs.deps;
+  const setSales    = v => setInputs(p=>({...p, sales:v}));
+  const setExpenses = v => setInputs(p=>({...p, expenses:v}));
+  const setAoshiro  = v => setInputs(p=>({...p, aoshiro:v}));
+  const setAge      = v => setInputs(p=>({...p, age:v}));
+  const setDeps     = v => setInputs(p=>({...p, deps:v}));
 
   const S = parseInt(sales)||0;
   const E = parseInt(expenses)||0;
@@ -963,9 +967,12 @@ function QuickTablePage() {
 // ─── メインApp ────────────────────────────────────
 export default function App() {
   const [tab,setTab]=useState("hayami");
-
-  // 節税シミュの計算値を解説ページへ渡すための state
   const [simData, setSimData] = useState(null);
+
+  // SimPageの入力をAppで保持 → タブ切り替えでも消えない
+  const [simInputs, setSimInputs] = useState({
+    sales:"", expenses:"", aoshiro:"65万（e-Tax）", age:"40歳未満", deps:0
+  });
 
   const TABS=[
     {key:"hayami",  icon:"📊", label:"早見表"},
@@ -1061,7 +1068,9 @@ export default function App() {
         </div>
 
         {tab==="hayami"   && <QuickTablePage/>}
-        {tab==="sim"      && <SimPage onCalc={setSimData}/>}
+        <div style={{display: tab==="sim" ? "block" : "none"}}>
+          <SimPage onCalc={setSimData} inputs={simInputs} setInputs={setSimInputs}/>
+        </div>
         {tab==="explain"  && <ExplainPage simInputs={simData}/>}
       </div>
     </div>
