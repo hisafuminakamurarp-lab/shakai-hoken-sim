@@ -124,7 +124,8 @@ function calcBefore(jigyoShotoku, aoshiroKey, age, deps) {
   const aokojo = AOSHIRO_MAP[aoshiroKey]||0;
   const shotokuAfter = Math.max(jigyoShotoku-aokojo,0);
   const jigyoZei     = calcJigyoZei(jigyoShotoku);
-  const nhi          = calcTokyoNHI(shotokuAfter, age); // 新宿区 令和8年度料率
+  // 国保料は事業所得（青色控除前）を基準に計算する
+  const nhi          = calcTokyoNHI(jigyoShotoku, age); // 新宿区 令和8年度料率
   const nenkin       = age==="65歳以上" ? 0 : 17920*12; // 国民年金
   const socDed       = nhi+nenkin;
   const taxableIncome= Math.max(shotokuAfter-socDed-jigyoZei-480000-deps*380000,0);
