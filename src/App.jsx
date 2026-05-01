@@ -422,25 +422,105 @@ function SimPage({ onCalc, inputs, setInputs }) {
     <div className="pc-right">
     <LiveBadge/>
 
-    {/* 節税効果ビッグボックス */}
+    {/* 節税効果ビッグボックス + 5年累積 + CTA */}
     <div style={{
       background:isPositive?"linear-gradient(135deg,#14532d,#166534)":"linear-gradient(135deg,#7f1d1d,#991b1b)",
-      borderRadius:18, padding:"20px", textAlign:"center", marginBottom:14,
+      borderRadius:18, padding:"24px 20px", textAlign:"center", marginBottom:14,
       border:isPositive?"1px solid #4ade80":"1px solid #f87171",
       boxShadow:isPositive?"0 0 24px rgba(74,222,128,0.15)":"0 0 24px rgba(248,113,113,0.15)"
     }}>
-      <div style={{fontSize:11,letterSpacing:"0.12em",color:isPositive?"#86efac":"#fca5a5",marginBottom:6}}>
-        {isPositive?"💰 社団加入による年間節税効果（手取り増加）":"⚠️ 社団加入の年間コスト増"}
-      </div>
-      <div style={{fontSize:44,fontWeight:700,color:"#fff",letterSpacing:"-0.02em",transition:"all 0.2s"}}>
-        {isPositive?"+":""}{fmt(saving)}円
-      </div>
-      <div style={{fontSize:13,color:isPositive?"#86efac":"#fca5a5",marginTop:6}}>
-        月換算 {isPositive?"+":""}{fmt(Math.round(saving/12))}円 / 月
-      </div>
-      {jigyoShotoku===0&&<div style={{fontSize:12,color:"rgba(255,255,255,0.4)",marginTop:8}}>
-        売上・経費を入力してください
-      </div>}
+      {jigyoShotoku === 0 ? (
+        <>
+          <div style={{fontSize:13,color:"rgba(255,255,255,0.5)",padding:"20px 0"}}>
+            売上・経費を入力してください
+          </div>
+        </>
+      ) : isPositive ? (
+        <>
+          {/* 損失訴求 */}
+          <div style={{fontSize:12,letterSpacing:"0.08em",color:"#fca5a5",marginBottom:6,fontWeight:700}}>
+            ⚠️ 現状、あなたは年間
+          </div>
+          <div style={{fontSize:42,fontWeight:700,color:"#fef2f2",letterSpacing:"-0.02em",lineHeight:1.1}}>
+            ¥{fmt(saving)}
+          </div>
+          <div style={{fontSize:13,color:"#fca5a5",marginTop:4,fontWeight:600}}>
+            損をしています
+          </div>
+
+          {/* 矢印 */}
+          <div style={{fontSize:24,color:"rgba(255,255,255,0.4)",margin:"14px 0 10px"}}>↓</div>
+
+          {/* 回収提示 */}
+          <div style={{fontSize:11,letterSpacing:"0.08em",color:"#86efac",marginBottom:4,fontWeight:700}}>
+            今すぐ社団加入で改善すれば
+          </div>
+          <div style={{fontSize:34,fontWeight:700,color:"#fff",letterSpacing:"-0.02em",lineHeight:1.2}}>
+            年間 +¥{fmt(saving)}
+          </div>
+          <div style={{fontSize:13,color:"#86efac",marginTop:4}}>
+            のキャッシュが手元に残ります（月 +¥{fmt(Math.round(saving/12))}）
+          </div>
+
+          {/* 5年・10年の長期インパクト */}
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginTop:18}}>
+            <div style={{background:"rgba(255,255,255,0.08)",borderRadius:10,padding:"10px"}}>
+              <div style={{fontSize:10,color:"#86efac",letterSpacing:"0.06em"}}>5年で</div>
+              <div style={{fontSize:20,fontWeight:700,color:"#fff",marginTop:2}}>+¥{fmt(saving*5)}</div>
+            </div>
+            <div style={{background:"rgba(255,255,255,0.08)",borderRadius:10,padding:"10px"}}>
+              <div style={{fontSize:10,color:"#86efac",letterSpacing:"0.06em"}}>10年で</div>
+              <div style={{fontSize:20,fontWeight:700,color:"#fff",marginTop:2}}>+¥{fmt(saving*10)}</div>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <a
+            href="https://zaimusienkikou-website.vercel.app/contact.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display:"block",
+              marginTop:18,
+              background:"linear-gradient(135deg,#c9a84c,#e0c068)",
+              color:"#1a2744",
+              padding:"16px 24px",
+              borderRadius:10,
+              fontSize:15,
+              fontWeight:700,
+              letterSpacing:"0.05em",
+              textDecoration:"none",
+              boxShadow:"0 4px 16px rgba(201,168,76,0.4)",
+              transition:"transform 0.15s, box-shadow 0.15s",
+            }}
+            onMouseOver={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow="0 6px 20px rgba(201,168,76,0.5)";}}
+            onMouseOut={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="0 4px 16px rgba(201,168,76,0.4)";}}
+          >
+            ＼無料で最適プランを作成／<br/>
+            お問い合わせ・無料相談はこちら →
+          </a>
+          <div style={{fontSize:10,color:"rgba(255,255,255,0.5)",marginTop:8}}>
+            約30秒で送信完了・しつこい営業なし
+          </div>
+        </>
+      ) : (
+        <>
+          {/* 加入してもメリットが出ない場合 */}
+          <div style={{fontSize:12,letterSpacing:"0.08em",color:"#fca5a5",marginBottom:6,fontWeight:700}}>
+            ⚠️ 現状の所得では加入メリットが出ません
+          </div>
+          <div style={{fontSize:36,fontWeight:700,color:"#fff",letterSpacing:"-0.02em"}}>
+            年間 ¥{fmt(Math.abs(saving))}
+          </div>
+          <div style={{fontSize:13,color:"#fca5a5",marginTop:4}}>
+            のコスト増になります（月 ¥{fmt(Math.round(Math.abs(saving)/12))}）
+          </div>
+          <div style={{fontSize:11,color:"rgba(255,255,255,0.6)",marginTop:14,lineHeight:1.7}}>
+            所得が一定額（目安: 課税所得200万円以上）を<br/>
+            超えるとメリットが出やすくなります
+          </div>
+        </>
+      )}
     </div>
 
     {/* 年間詳細比較 */}
@@ -478,11 +558,18 @@ function SimPage({ onCalc, inputs, setInputs }) {
           ["個人事業税",jigyoZeiAft,"#f87171"],
           ["所得税",incomeTaxAft,"#f87171"],
           ["住民税",juminZeiAft,"#f87171"],
-        ].filter(Boolean).map(([k,v,c])=>(
-          <div key={k} style={{display:"flex",justifyContent:"space-between",
-            padding:"4px 0",borderBottom:"1px solid #0f172a",fontSize:11}}>
-            <span style={{color:"#94a3b8"}}>{k}</span>
-            <span style={{color:c,fontWeight:700}}>¥{fmt(v)}</span>
+        ].filter(Boolean).map(([k,v,c],idx)=>(
+          <div key={k}>
+            <div style={{display:"flex",justifyContent:"space-between",
+              padding:"4px 0",borderBottom:"1px solid #0f172a",fontSize:11}}>
+              <span style={{color:"#94a3b8"}}>{k}</span>
+              <span style={{color:c,fontWeight:700}}>¥{fmt(v)}</span>
+            </div>
+            {idx===0 && (
+              <div style={{fontSize:9,color:"#64748b",padding:"2px 0 4px",borderBottom:"1px solid #0f172a"}}>
+                内訳: 会費 ¥{fmt(ASSOC.memberFee*12)} − 役員報酬手取り ¥{fmt(ASSOC.takeHome*12)}
+              </div>
+            )}
           </div>
         ))}
         <div style={{display:"flex",justifyContent:"space-between",padding:"6px 0",fontSize:12,fontWeight:700,marginTop:4}}>
@@ -500,6 +587,42 @@ function SimPage({ onCalc, inputs, setInputs }) {
       <NetBox label="加入前 年間手取り" net={bef.net} total={jigyoShotoku} color1="#78350f" color2="#92400e"/>
       <NetBox label="加入後 年間手取り" net={netAft} total={jigyoShotoku} color1="#0c4a6e" color2="#0e7490"/>
     </div>
+
+    {/* ボトムCTA */}
+    {jigyoShotoku > 0 && isPositive && (
+      <div style={{
+        background:"linear-gradient(135deg,rgba(201,168,76,0.15),rgba(224,192,104,0.1))",
+        border:"1px solid #c9a84c",borderRadius:14,padding:"18px 16px",
+        textAlign:"center",marginBottom:14
+      }}>
+        <div style={{fontSize:12,color:"#e0c068",fontWeight:700,marginBottom:6}}>
+          年間 ¥{fmt(saving)} の損失、見過ごせますか？
+        </div>
+        <div style={{fontSize:11,color:"#94a3b8",marginBottom:14,lineHeight:1.7}}>
+          実際にご自身の状況で最大限の効果が出るか<br/>
+          無料で確認できます
+        </div>
+        <a
+          href="https://zaimusienkikou-website.vercel.app/contact.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display:"inline-block",
+            background:"linear-gradient(135deg,#c9a84c,#e0c068)",
+            color:"#1a2744",
+            padding:"14px 28px",
+            borderRadius:8,
+            fontSize:14,
+            fontWeight:700,
+            letterSpacing:"0.05em",
+            textDecoration:"none",
+            boxShadow:"0 4px 12px rgba(201,168,76,0.3)",
+          }}
+        >
+          無料で相談する →
+        </a>
+      </div>
+    )}
 
     <p style={{fontSize:11,color:"#334155",textAlign:"center",lineHeight:1.9}}>
       ※国民健康保険は東京・新宿区 令和8年度料率に基づく概算。市区町村により異なります<br/>
@@ -858,8 +981,9 @@ function QuickTablePage() {
         {/* 加入後固定コスト説明 */}
         <div style={{background:"rgba(56,189,248,0.06)",borderRadius:8,padding:"10px 12px",fontSize:12,color:"#64748b",lineHeight:1.8}}>
           <strong style={{color:"#38bdf8"}}>加入後コスト（固定）</strong><br/>
-          会費 ¥{fmt(ASSOC.memberFee)}/月 － 役員報酬手取り ¥{fmt(ASSOC.takeHome)}/月<br/>
-          ＝ 実質 <strong style={{color:"#fff"}}>¥{fmt(ASSOC.memberFee - ASSOC.takeHome)}/月（¥{fmt((ASSOC.memberFee - ASSOC.takeHome)*12)}/年）</strong>
+          会員費 ¥{fmt(ASSOC.memberFee*12)}/年 − 役員報酬手取り ¥{fmt(ASSOC.takeHome*12)}/年<br/>
+          ＝ <strong style={{color:"#fff"}}>実質 ¥{fmt((ASSOC.memberFee - ASSOC.takeHome)*12)}/年</strong>
+          <span style={{fontSize:10,color:"#475569"}}> （月換算 ¥{fmt(ASSOC.memberFee - ASSOC.takeHome)}）</span>
         </div>
       </div>
 
@@ -959,6 +1083,40 @@ function QuickTablePage() {
           </div>
         );
       })}
+      </div>
+
+      {/* CTA: 早見表ページ */}
+      <div style={{
+        background:"linear-gradient(135deg,rgba(201,168,76,0.15),rgba(224,192,104,0.1))",
+        border:"1px solid #c9a84c",borderRadius:14,padding:"20px 18px",
+        textAlign:"center",marginTop:20,marginBottom:14
+      }}>
+        <div style={{fontSize:13,color:"#e0c068",fontWeight:700,marginBottom:6}}>
+          ご自身の状況で正確に試算するなら
+        </div>
+        <div style={{fontSize:11,color:"#94a3b8",marginBottom:14,lineHeight:1.7}}>
+          売上・経費を入力すれば、より精緻な節税効果が分かります<br/>
+          専門家による無料相談も受付中
+        </div>
+        <a
+          href="https://zaimusienkikou-website.vercel.app/contact.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display:"inline-block",
+            background:"linear-gradient(135deg,#c9a84c,#e0c068)",
+            color:"#1a2744",
+            padding:"14px 32px",
+            borderRadius:8,
+            fontSize:14,
+            fontWeight:700,
+            letterSpacing:"0.05em",
+            textDecoration:"none",
+            boxShadow:"0 4px 12px rgba(201,168,76,0.3)",
+          }}
+        >
+          ＼無料相談はこちら／ →
+        </a>
       </div>
 
       <p style={{fontSize:11,color:"#334155",textAlign:"center",marginTop:8,lineHeight:1.8}}>
