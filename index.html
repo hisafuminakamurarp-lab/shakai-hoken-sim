@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>えんむすび | 個人事業主のための社会保険加入支援</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --gold: #b8924a;
+    --gold-light: #d4a96a;
+    --gold-pale: #f5ede0;
+    --navy: #1a2744;
+    --navy-mid: #2c3e6b;
+    --white: #ffffff;
+    --off-white: #fafaf8;
+    --gray: #6b7280;
+    --gray-light: #f3f4f6;
+    --text: #1f2937;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    line-height: 1.7;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(184,146,74,0.15);
+    padding: 0 80px;
+    height: 64px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav-logo {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px; font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 0.08em;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    font-size: 14px; color: var(--gray);
+    text-decoration: none; letter-spacing: 0.05em;
+    transition: color 0.2s;
+    font-weight: 400;
+  }
+  .nav-links a:hover { color: var(--navy); }
+  .nav-cta {
+    background: var(--navy) !important;
+    color: white !important;
+    padding: 9px 22px !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--gold) !important; color: white !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--off-white);
+    display: flex; align-items: center;
+    padding: 100px 24px 60px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 50%; height: 100%;
+    background: linear-gradient(135deg, var(--gold-pale) 0%, rgba(245,237,224,0.3) 100%);
+    clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+  .hero-inner {
+    max-width: 1100px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    align-items: center; position: relative; z-index: 1;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--gold-pale); border: 1px solid var(--gold-light);
+    padding: 6px 14px; border-radius: 100px;
+    font-size: 11px; color: var(--gold); font-weight: 700;
+    letter-spacing: 0.1em; margin-bottom: 24px;
+  }
+  .hero-badge::before { content: '●'; font-size: 8px; }
+  .hero h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(28px, 4vw, 46px);
+    font-weight: 700; line-height: 1.4;
+    color: var(--navy); margin-bottom: 20px;
+    letter-spacing: 0.02em;
+  }
+  .hero h1 em {
+    font-style: normal; color: var(--gold);
+    border-bottom: 2px solid var(--gold-light);
+  }
+  .hero-sub {
+    font-size: 15px; color: var(--gray); margin-bottom: 36px;
+    line-height: 1.9;
+  }
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--navy); color: white;
+    padding: 14px 28px; border-radius: 4px;
+    font-size: 14px; font-weight: 700;
+    text-decoration: none; letter-spacing: 0.05em;
+    transition: all 0.2s; display: inline-block;
+    border: 2px solid var(--navy);
+  }
+  .btn-primary:hover { background: var(--gold); border-color: var(--gold); }
+  .btn-secondary {
+    background: transparent; color: var(--navy);
+    padding: 14px 28px; border-radius: 4px;
+    font-size: 14px; font-weight: 700;
+    text-decoration: none; letter-spacing: 0.05em;
+    transition: all 0.2s; display: inline-block;
+    border: 2px solid var(--navy);
+  }
+  .btn-secondary:hover { background: var(--navy); color: white; }
+
+  .hero-card {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 20px 60px rgba(26,39,68,0.12);
+    border: 1px solid rgba(184,146,74,0.2);
+  }
+  .hero-card-label {
+    font-size: 11px; color: var(--gold); font-weight: 700;
+    letter-spacing: 0.12em; margin-bottom: 8px;
+  }
+  .hero-card-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px; color: var(--navy);
+    margin-bottom: 20px; font-weight: 600;
+  }
+  .saving-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 0; border-bottom: 1px solid var(--gray-light);
+    font-size: 13px;
+  }
+  .saving-row:last-of-type { border-bottom: none; }
+  .saving-income { color: var(--gray); font-weight: 500; }
+  .saving-amount { font-weight: 700; color: #059669; font-size: 15px; }
+  .hero-card-note {
+    font-size: 10px; color: var(--gray); margin-top: 12px;
+    padding-top: 12px; border-top: 1px solid var(--gray-light);
+  }
+  .hero-card-sim-btn {
+    display: block; width: 100%; margin-top: 16px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: white; text-align: center; padding: 12px;
+    border-radius: 8px; font-size: 13px; font-weight: 700;
+    text-decoration: none; letter-spacing: 0.05em;
+    transition: opacity 0.2s;
+  }
+  .hero-card-sim-btn:hover { opacity: 0.85; }
+
+  /* ── SECTION BASE ── */
+  section { padding: 80px 24px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-size: 11px; color: var(--gold); font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(22px, 3vw, 34px);
+    font-weight: 700; color: var(--navy);
+    line-height: 1.4; margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 15px; color: var(--gray); max-width: 600px;
+    line-height: 1.9;
+  }
+
+  /* ── PROBLEM ── */
+  .problem { background: var(--navy); }
+  .problem .section-label { color: var(--gold-light); }
+  .problem .section-title { color: white; }
+  .problem .section-sub { color: rgba(255,255,255,0.7); max-width: 700px; }
+  .problem-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px; margin-top: 48px;
+  }
+  .problem-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 24px;
+  }
+  .problem-icon { font-size: 28px; margin-bottom: 12px; }
+  .problem-card h3 {
+    font-size: 15px; font-weight: 700; color: white;
+    margin-bottom: 8px;
+  }
+  .problem-card p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.7; }
+
+  /* ── HOW ── */
+  .how { background: var(--off-white); }
+  .how-steps {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0; margin-top: 48px; position: relative;
+  }
+  .step {
+    padding: 32px 24px;
+    background: white; border: 1px solid rgba(184,146,74,0.15);
+    position: relative;
+  }
+  .step:not(:last-child)::after {
+    content: '→';
+    position: absolute; right: -14px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold); font-size: 20px; z-index: 2;
+    background: var(--off-white); padding: 0 4px;
+  }
+  .step-num {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 36px; font-weight: 700; color: var(--gold-pale);
+    line-height: 1; margin-bottom: 12px;
+  }
+  .step h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .step p { font-size: 13px; color: var(--gray); line-height: 1.7; }
+
+  /* ── MERIT ── */
+  .merit { background: white; }
+  .merit-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px; margin-top: 48px;
+  }
+  .merit-card {
+    padding: 28px; border-radius: 12px;
+    border: 1px solid rgba(184,146,74,0.2);
+    background: var(--off-white);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .merit-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(26,39,68,0.1);
+  }
+  .merit-num {
+    font-size: 11px; font-weight: 700; color: var(--gold);
+    letter-spacing: 0.1em; margin-bottom: 8px;
+  }
+  .merit-card h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .merit-card p { font-size: 13px; color: var(--gray); line-height: 1.7; }
+
+  /* ── SIMULATOR CTA ── */
+  .sim-cta {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .sim-cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 70% 50%, rgba(184,146,74,0.15) 0%, transparent 60%);
+  }
+  .sim-cta .container { position: relative; z-index: 1; }
+  .sim-cta .section-label { color: var(--gold-light); }
+  .sim-cta .section-title { color: white; }
+  .sim-cta .section-sub { color: rgba(255,255,255,0.7); margin: 0 auto 36px; }
+  .sim-preview {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px; padding: 24px;
+    max-width: 560px; margin: 0 auto 32px;
+  }
+  .sim-row {
+    display: flex; justify-content: space-between;
+    padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 13px; color: rgba(255,255,255,0.8);
+  }
+  .sim-row:last-child { border-bottom: none; }
+  .sim-row strong { color: #34d399; font-size: 15px; }
+  .sim-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: white; padding: 16px 36px; border-radius: 4px;
+    font-size: 15px; font-weight: 700;
+    text-decoration: none; letter-spacing: 0.05em;
+    transition: opacity 0.2s; display: inline-block;
+  }
+  .btn-gold:hover { opacity: 0.85; }
+  .btn-outline-white {
+    background: transparent; color: white;
+    padding: 16px 36px; border-radius: 4px;
+    font-size: 15px; font-weight: 700;
+    text-decoration: none; letter-spacing: 0.05em;
+    border: 2px solid rgba(255,255,255,0.4);
+    transition: all 0.2s; display: inline-block;
+  }
+  .btn-outline-white:hover { background: rgba(255,255,255,0.1); }
+
+  /* ── FAQ ── */
+  .faq { background: white; }
+  .faq-list { max-width: 720px; margin: 48px auto 0; }
+  .faq-item {
+    border-bottom: 1px solid rgba(184,146,74,0.2);
+  }
+  .faq-item:first-child { border-top: 1px solid rgba(184,146,74,0.2); }
+  .faq-q {
+    padding: 20px 4px;
+    font-size: 14px; font-weight: 700; color: var(--navy);
+    display: flex; gap: 14px; align-items: center;
+    cursor: pointer;
+    justify-content: space-between;
+    transition: color 0.2s;
+  }
+  .faq-q:hover { color: var(--gold); }
+  .faq-q-inner { display: flex; gap: 14px; align-items: flex-start; }
+  .faq-q-inner span:first-child {
+    color: var(--gold); font-weight: 700; flex-shrink: 0;
+    font-family: 'Noto Serif JP', serif; font-size: 16px;
+  }
+  .faq-icon {
+    flex-shrink: 0; width: 20px; height: 20px;
+    border: 1.5px solid var(--gold); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: var(--gold);
+    transition: transform 0.3s;
+  }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.3s ease;
+    font-size: 13px; color: var(--gray); line-height: 1.9;
+    padding: 0 4px 0 34px;
+  }
+  .faq-item.open .faq-a {
+    max-height: 200px;
+    padding: 0 4px 20px 34px;
+  }
+
+  /* ── CONTACT ── */
+  .contact {
+    background: var(--off-white);
+    text-align: center;
+    padding: 100px 24px;
+  }
+  .contact .section-label { color: var(--gold); }
+  .contact-heading {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 700; color: var(--navy);
+    line-height: 1.3; margin-bottom: 24px;
+    letter-spacing: 0.02em;
+  }
+  .contact-sub {
+    font-size: 15px; color: var(--gray);
+    margin-bottom: 56px; line-height: 1.8;
+  }
+  .contact-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: white;
+    padding: 22px 60px;
+    border-radius: 6px;
+    font-size: 17px; font-weight: 700;
+    text-decoration: none; letter-spacing: 0.05em;
+    transition: opacity 0.2s;
+    min-width: 480px;
+    max-width: 100%;
+  }
+  .contact-btn:hover { opacity: 0.85; }
+  @media (max-width: 600px) {
+    .contact-btn { min-width: unset; width: 100%; padding: 20px 24px; font-size: 15px; }
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--navy); color: rgba(255,255,255,0.5);
+    padding: 32px 24px; text-align: center;
+    font-size: 12px; line-height: 1.8;
+  }
+  footer strong { color: white; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 36px; }
+    .hero::before { width: 100%; clip-path: none; opacity: 0.4; }
+    .step:not(:last-child)::after { display: none; }
+    .nav-links { display: none; }
+    .contact-cards { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .contact-cards { grid-template-columns: 1fr; }
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-left > * { animation: fadeUp 0.7s ease both; }
+  .hero-left > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero-left > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero-left > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero-left > *:nth-child(4) { animation-delay: 0.4s; }
+  .hero-card { animation: fadeUp 0.7s 0.5s ease both; }
+
+  /* ── DIVIDER ── */
+  .gold-divider {
+    width: 48px; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 2px; margin: 16px 0 32px;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">えん<span>むすび</span></div>
+  <div class="nav-links">
+    <a href="#faq">よくある質問</a>
+    <a href="https://zaimusienkikou-website.vercel.app/contact.html" target="_blank" class="nav-cta">お問い合わせ</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">一般社団法人 中小企業財務支援機構</div>
+      <h1>個人事業主のまま、<br/><em>社会保険</em>に加入できる。</h1>
+      <p class="hero-sub">
+        国民健康保険・国民年金の高い保険料に悩んでいませんか？<br/>
+        えんむすびの社団会員になるだけで、<br/>
+        社会保険（健康保険＋厚生年金）に加入できます。
+      </p>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-label">SAVING SIMULATION</div>
+      <div class="hero-card-title">所得別・年間節約額の目安（東京都・40歳未満）</div>
+      <div class="saving-row">
+        <span class="saving-income">所得 300万円</span>
+        <span class="saving-amount">年間 ▲147,123円</span>
+      </div>
+      <div class="saving-row">
+        <span class="saving-income">所得 400万円</span>
+        <span class="saving-amount">年間 ▲252,923円</span>
+      </div>
+      <div class="saving-row">
+        <span class="saving-income">所得 500万円</span>
+        <span class="saving-amount">年間 ▲358,723円</span>
+      </div>
+      <div class="saving-row">
+        <span class="saving-income">所得 700万円</span>
+        <span class="saving-amount">年間 ▲570,323円</span>
+      </div>
+      <p class="hero-card-note">※会費月35,000円（年420,000円）から役員報酬手取り相当額を差し引いた実質負担（年406,896円）で試算。社会保険コストのみの比較で、税金の増減は含まれません。</p>
+      <a href="https://shakai-hoken-sim-delta.vercel.app" target="_blank" class="hero-card-sim-btn">
+        自分の節税額を計算する →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem" id="problem">
+  <div class="container">
+    <div class="section-label">PROBLEM</div>
+    <h2 class="section-title">こんなお悩みはありませんか？</h2>
+    <div class="gold-divider"></div>
+    <p class="section-sub">個人事業主・フリーランスの方が抱える社会保険の課題</p>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon">💸</div>
+        <h3>国保が高すぎる</h3>
+        <p>所得が上がるほど国保料が跳ね上がり、年間数十万円の負担になることも。</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">😰</div>
+        <h3>病気でも保障がない</h3>
+        <p>国保には傷病手当金がなく、病気や怪我で働けなくなっても収入補償がない。</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">📉</div>
+        <h3>将来の年金が少ない</h3>
+        <p>国民年金のみでは将来の受給額が少なく、老後の資産形成が不安。</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🏦</div>
+        <h3>審査が通りにくい</h3>
+        <p>ローンや賃貸審査で社会保険未加入が不利になるケースが多い。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="section-label">HOW IT WORKS</div>
+    <h2 class="section-title">えんむすびの仕組み</h2>
+    <div class="gold-divider"></div>
+    <p class="section-sub">社団法人の役員として月額12,000円の報酬を受け取ることで、社会保険に加入できます。</p>
+    <div class="how-steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>社団会員に加入</h3>
+        <p>月額35,000円の会員費で一般社団法人の役員に就任。手続きはシンプルです。</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>役員報酬を受け取る</h3>
+        <p>月額12,000円の役員報酬が支給されます（社会保険料差引後の手取り約1,092円）。</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>社会保険に加入</h3>
+        <p>健康保険・厚生年金に加入。国保・国民年金の支払いは不要になります。</p>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>個人事業を継続</h3>
+        <p>個人事業主としての活動はそのまま継続。社会保険の恩恵だけを受けられます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MERIT -->
+<section class="merit" id="merit">
+  <div class="container">
+    <div class="section-label">MERIT</div>
+    <h2 class="section-title">加入するメリット</h2>
+    <div class="gold-divider"></div>
+    <div class="merit-grid">
+      <div class="merit-card">
+        <div class="merit-num">MERIT 01</div>
+        <h3>保険料が大幅に削減</h3>
+        <p>所得300万円以上の方なら、国保＋国民年金より実質負担が安くなるケースが多い。年間10〜40万円の削減も。</p>
+      </div>
+      <div class="merit-card">
+        <div class="merit-num">MERIT 02</div>
+        <h3>傷病手当金が受け取れる</h3>
+        <p>病気や怪我で働けなくなった場合、最大1年6ヶ月間、給与の約2/3が支給されます。</p>
+      </div>
+      <div class="merit-card">
+        <div class="merit-num">MERIT 03</div>
+        <h3>将来の年金が増える</h3>
+        <p>厚生年金に切り替わることで、国民年金だけより将来の受給額が大幅にアップします。</p>
+      </div>
+      <div class="merit-card">
+        <div class="merit-num">MERIT 04</div>
+        <h3>出産手当金が受け取れる</h3>
+        <p>出産前後の休業中に給与の約2/3が支給。国保にはない手厚い保障です。</p>
+      </div>
+      <div class="merit-card">
+        <div class="merit-num">MERIT 05</div>
+        <h3>扶養制度が使える</h3>
+        <p>配偶者や家族を扶養に入れることで、家族全体の保険料を削減できます。</p>
+      </div>
+      <div class="merit-card">
+        <div class="merit-num">MERIT 06</div>
+        <h3>各種審査に有利</h3>
+        <p>住宅ローン・賃貸・クレジットカードなど、社会保険加入が審査に好影響を与えます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIMULATOR CTA -->
+<section class="sim-cta">
+  <div class="container">
+    <div class="section-label">SIMULATION</div>
+    <h2 class="section-title">あなたの節税額を今すぐ確認</h2>
+    <div class="gold-divider" style="margin: 16px auto 32px;"></div>
+    <p class="section-sub">所得・年齢・都道府県を入力するだけで、加入前後の社会保険料を比較できます。</p>
+    <div class="sim-preview">
+      <div class="sim-row"><span>所得 500万円 / 東京都 / 40歳未満</span></div>
+      <div class="sim-row"><span>加入前（国保＋国民年金）</span><span>年間 765,619円</span></div>
+      <div class="sim-row"><span>加入後（実質負担）</span><span>年間 406,896円</span></div>
+      <div class="sim-row"><span>年間節約効果</span><strong>▲358,723円</strong></div>
+    </div>
+    <div class="sim-btns">
+      <a href="https://shakai-hoken-sim-delta.vercel.app" target="_blank" class="btn-gold">
+        無料シミュレーターを使う →
+      </a>
+      <a href="#contact" class="btn-outline-white">お問い合わせ</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">よくある質問</h2>
+    <div class="gold-divider"></div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-inner"><span>Q</span><span>個人事業を続けながら加入できますか？</span></div>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">はい、個人事業主としての活動を継続しながら加入できます。社団の役員に就任するだけで、事業内容や働き方を変える必要はありません。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-inner"><span>Q</span><span>月額35,000円の内訳を教えてください。</span></div>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">役員報酬12,000円（社会保険料10,908円＋手取り1,092円）と法定福利費11,223円（会社負担の社会保険料）が含まれています。実質的な自己負担は35,000円－役員報酬手取り＝約33,908円/月です。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-inner"><span>Q</span><span>会員費は経費になりますか？</span></div>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">業務に関連する社団費用として経費計上できる可能性があります。詳しくは担当の税理士にご確認ください。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-inner"><span>Q</span><span>所得が低い場合でもメリットがありますか？</span></div>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">所得が低い場合は国保料も低くなるため、社会保険コストが逆に高くなる可能性があります。目安として所得200万円以上からメリットが出やすい傾向があります。シミュレーターでご確認ください。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">
+          <div class="faq-q-inner"><span>Q</span><span>いつでも退会できますか？</span></div>
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-a">はい、所定の手続きにより退会できます。退会後は国民健康保険・国民年金に戻る手続きが必要です。詳細はお問い合わせください。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-label">CONTACT</div>
+    <h2 class="contact-heading">まずはお気軽にご相談ください</h2>
+    <p class="contact-sub">お問い合わせフォームよりお気軽にどうぞ。</p>
+    <a href="https://zaimusienkikou-website.vercel.app/contact.html" target="_blank" class="contact-btn">
+      お問い合わせ・入会申し込みはこちら →
+    </a>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <strong>一般社団法人 中小企業財務支援機構</strong><br/>
+  えんむすび<br/><br/>
+  <span style="font-size:11px;">© 2026 一般社団法人 中小企業財務支援機構 All Rights Reserved.</span>
+</footer>
+
+</body>
+</html>
