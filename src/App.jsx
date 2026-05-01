@@ -822,7 +822,8 @@ function calcTokyoNHI(income, age) {
   return main + kaigo;
 }
 
-const AFTER_ANNUAL = ASSOC.memberFee * 12; // 420,000固定（35,000×12）
+// 加入後の年間実質負担額: 会費 - 役員報酬手取り = 33,908円/月 × 12
+const AFTER_ANNUAL = (ASSOC.memberFee - ASSOC.takeHome) * 12; // 406,896 (33,908×12)
 
 function QuickTablePage() {
   const [age, setAge]   = useState("40歳未満");
